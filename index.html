@@ -1,14 +1,20 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Simulador fictício de urna eletrônica para fins educacionais.">
-  <title>Simulador de Urna Eletrônica – Fictício</title>
+  <meta name="description" content="Simulador de urna eletrônica com diagnóstico de TI e acessibilidade.">
+  <title>Simulador de Urna Eletrônica – Suporte em TI</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
+
+  <!-- Barra Acessibilidade e Ferramentas -->
+  <div class="topbar">
+    <button type="button" id="btn-contraste" class="btn-topbar">🌓 Alto Contraste</button>
+    <button type="button" id="btn-painel-ti" class="btn-topbar btn-topbar--ti">🛠️ Painel de Suporte (TI)</button>
+  </div>
 
   <!-- Aviso permanente: projeto fictício -->
   <div class="aviso" role="note">
@@ -18,11 +24,22 @@
   <!-- TELA INICIAL -->
   <section id="inicio" class="cartao">
     <h1>Simulador de Urna Eletrônica</h1>
-    <p>Projeto <strong>fictício e educacional</strong>. Candidatos e partidos são inventados e o resultado não tem nenhuma validade eleitoral.</p>
-    <button type="button" id="btn-iniciar" class="botao botao--confirma botao--largo">INICIAR VOTAÇÃO</button>
+    <p>Projeto <strong>fictício e educacional</strong>. Desenvolvido para o curso de Suporte Técnico em TI.</p>
+    <button type="button" id="btn-iniciar" class="botao botao--confirma botao--largo">INICIAR SESSÃO DE VOTAÇÃO</button>
   </section>
 
-  <!-- URNA (aparece depois de iniciar a votação) -->
+  <!-- IDENTIFICAÇÃO FICTÍCIA DO ELEITOR (MESA DO MESÁRIO) -->
+  <section id="mesario" class="cartao" hidden>
+    <h2>Mesa Receptora — Identificação</h2>
+    <p>Digite um número fictício de documento/título para autorizar a urna:</p>
+    <div class="campo-mesario">
+      <input type="text" id="doc-eleitor" placeholder="Ex: 1234" maxlength="6" autocomplete="off">
+      <button type="button" id="btn-autorizar" class="botao botao--confirma">LIBERAR URNA</button>
+    </div>
+    <p id="msg-mesario" class="msg-erro"></p>
+  </section>
+
+  <!-- URNA -->
   <main id="urna" class="urna" aria-label="Simulador de urna eletrônica" hidden>
 
     <!-- ÁREA DA TELA -->
@@ -30,7 +47,7 @@
 
       <header class="tela__cabecalho">
         <p class="tela__titulo">Seu voto para</p>
-        <h2 id="cargo" class="tela__cargo">Cargo</h2>
+        <h2 id="cargo" class="tela__cargo">Proposta</h2>
       </header>
 
       <div class="tela__corpo">
@@ -50,21 +67,21 @@
           </div>
 
           <div class="campo">
-            <span class="campo__rotulo">Partido</span>
+            <span class="campo__rotulo">Partido / Categoria</span>
             <p id="partido-candidato" class="campo__valor"></p>
           </div>
         </div>
 
         <figure class="foto">
-          <img id="foto-candidato" class="foto__imagem" src="" alt="" hidden>
           <div id="foto-placeholder" class="foto__placeholder">Foto</div>
           <figcaption id="foto-legenda" class="foto__legenda"></figcaption>
         </figure>
 
       </div>
 
-      <!-- Mensagens ao eleitor -->
+      <!-- Mensagens ao eleitor e comprovante -->
       <div id="mensagem" class="mensagem" role="status" aria-live="polite"></div>
+      <div id="comprovante-ticket" class="comprovante" hidden></div>
 
       <footer class="tela__rodape">
         <p>Aperte a tecla:</p>
@@ -99,7 +116,7 @@
     </section>
   </main>
 
-  <!-- CONTADOR DE ELEITORES E BOTÃO DE ENCERRAR -->
+  <!-- CONTADOR E ENCERRAR -->
   <div id="status" class="status" hidden>
     <p id="contador">Eleitores registrados: 0</p>
     <button type="button" id="btn-encerrar" class="botao botao--encerrar">ENCERRAR VOTAÇÃO</button>
@@ -108,18 +125,38 @@
   <!-- VOTAÇÃO ENCERRADA -->
   <section id="encerrada" class="cartao" hidden>
     <h2>VOTAÇÃO ENCERRADA</h2>
-    <p>Os votos foram registrados. Clique abaixo para ver a apuração.</p>
-    <button type="button" id="btn-apuracao" class="botao botao--confirma botao--largo">VER APURAÇÃO</button>
+    <p>Os votos foram contabilizados e a urna foi selada.</p>
+    <button type="button" id="btn-apuracao" class="botao botao--confirma botao--largo">VER APURAÇÃO E BOLETIM</button>
   </section>
 
-  <!-- APURAÇÃO: preenchida pelo JavaScript -->
+  <!-- APURAÇÃO -->
   <section id="apuracao" class="apuracao" aria-label="Apuração dos votos" hidden>
-    <h2 class="apuracao__titulo">Apuração</h2>
+    <h2 class="apuracao__titulo">Boletim de Urna — Apuração</h2>
     <div id="apuracao-resultado" class="apuracao__resultado"></div>
+    <div class="apuracao__acoes">
+      <button type="button" id="btn-imprimir" class="botao botao--confirma">🖨️ IMPRIMIR BOLETIM</button>
+    </div>
   </section>
+
+  <!-- MODAL DE DIAGNÓSTICO DE TI -->
+  <div id="modal-ti" class="modal" hidden>
+    <div class="modal__conteudo">
+      <h2>🛠️ Painel de Suporte & Diagnóstico de TI</h2>
+      <hr>
+      <div class="ti-grid">
+        <div class="ti-card"><strong>Status do Sistema:</strong> <span class="status-ok">ONLINE (OFFLINE LOCAL)</span></div>
+        <div class="ti-card"><strong>Integridade do Banco:</strong> <span class="status-ok">MEMÓRIA OK (0 FALHAS)</span></div>
+        <div class="ti-card"><strong>Bateria Simulado:</strong> 100% (Rede Elétrica)</div>
+        <div class="ti-card"><strong>Tempo Médio por Voto:</strong> <span id="ti-tempo-medio">0.0s</span></div>
+        <div class="ti-card"><strong>Total de Registros:</strong> <span id="ti-total-votos">0</span></div>
+        <div class="ti-card"><strong>Sons do Sistema:</strong> Ativos (Web Audio API)</div>
+      </div>
+      <button type="button" id="btn-fechar-ti" class="botao botao--corrige" style="margin-top: 1.5rem;">FECHAR PAINEL</button>
+    </div>
+  </div>
 
   <footer class="rodape">
-    <p>Projeto escolar fictício · Os candidatos e partidos exibidos não são reais.</p>
+    <p>Projeto escolar fictício · Suporte Técnico em TI · Candidatos e partidos são inventados.</p>
   </footer>
 
 </body>
