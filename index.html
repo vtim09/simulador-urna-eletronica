@@ -1,1 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Simulador fictício de urna eletrônica para fins educacionais.">
+  <title>Simulador de Urna Eletrônica – Fictício</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
 
+  <!-- Aviso permanente: projeto fictício -->
+  <div class="aviso" role="note">
+    SIMULADOR FICTÍCIO · USO EXCLUSIVAMENTE EDUCACIONAL · SEM VALIDADE ELEITORAL
+  </div>
+
+  <!-- TELA INICIAL -->
+  <section id="inicio" class="cartao">
+    <h1>Simulador de Urna Eletrônica</h1>
+    <p>Projeto <strong>fictício e educacional</strong>. Candidatos e partidos são inventados e o resultado não tem nenhuma validade eleitoral.</p>
+    <button type="button" id="btn-iniciar" class="botao botao--confirma botao--largo">INICIAR VOTAÇÃO</button>
+  </section>
+
+  <!-- URNA (aparece depois de iniciar a votação) -->
+  <main id="urna" class="urna" aria-label="Simulador de urna eletrônica" hidden>
+
+    <!-- ÁREA DA TELA -->
+    <section class="tela" aria-label="Tela de votação">
+
+      <header class="tela__cabecalho">
+        <p class="tela__titulo">Seu voto para</p>
+        <h2 id="cargo" class="tela__cargo">Cargo</h2>
+      </header>
+
+      <div class="tela__corpo">
+
+        <div class="tela__dados">
+          <div class="campo">
+            <span class="campo__rotulo">Número</span>
+            <div id="numero" class="numero" aria-live="polite">
+              <span class="numero__digito"></span>
+              <span class="numero__digito"></span>
+            </div>
+          </div>
+
+          <div class="campo">
+            <span class="campo__rotulo">Nome</span>
+            <p id="nome-candidato" class="campo__valor"></p>
+          </div>
+
+          <div class="campo">
+            <span class="campo__rotulo">Partido</span>
+            <p id="partido-candidato" class="campo__valor"></p>
+          </div>
+        </div>
+
+        <figure class="foto">
+          <img id="foto-candidato" class="foto__imagem" src="" alt="" hidden>
+          <div id="foto-placeholder" class="foto__placeholder">Foto</div>
+          <figcaption id="foto-legenda" class="foto__legenda"></figcaption>
+        </figure>
+
+      </div>
+
+      <!-- Mensagens ao eleitor -->
+      <div id="mensagem" class="mensagem" role="status" aria-live="polite"></div>
+
+      <footer class="tela__rodape">
+        <p>Aperte a tecla:</p>
+        <p>VERDE para CONFIRMAR este voto</p>
+        <p>LARANJA para REINICIAR este voto</p>
+      </footer>
+
+    </section>
+
+    <!-- ÁREA DO TECLADO -->
+    <section class="painel" aria-label="Teclado da urna">
+
+      <div class="teclado">
+        <button type="button" class="tecla" data-tecla="1">1</button>
+        <button type="button" class="tecla" data-tecla="2">2</button>
+        <button type="button" class="tecla" data-tecla="3">3</button>
+        <button type="button" class="tecla" data-tecla="4">4</button>
+        <button type="button" class="tecla" data-tecla="5">5</button>
+        <button type="button" class="tecla" data-tecla="6">6</button>
+        <button type="button" class="tecla" data-tecla="7">7</button>
+        <button type="button" class="tecla" data-tecla="8">8</button>
+        <button type="button" class="tecla" data-tecla="9">9</button>
+        <button type="button" class="tecla tecla--zero" data-tecla="0">0</button>
+      </div>
+
+      <div class="acoes">
+        <button type="button" class="botao botao--branco" data-acao="branco">BRANCO</button>
+        <button type="button" class="botao botao--corrige" data-acao="corrige">CORRIGE</button>
+        <button type="button" class="botao botao--confirma" data-acao="confirma">CONFIRMA</button>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- CONTADOR DE ELEITORES E BOTÃO DE ENCERRAR -->
+  <div id="status" class="status" hidden>
+    <p id="contador">Eleitores registrados: 0</p>
+    <button type="button" id="btn-encerrar" class="botao botao--encerrar">ENCERRAR VOTAÇÃO</button>
+  </div>
+
+  <!-- VOTAÇÃO ENCERRADA -->
+  <section id="encerrada" class="cartao" hidden>
+    <h2>VOTAÇÃO ENCERRADA</h2>
+    <p>Os votos foram registrados. Clique abaixo para ver a apuração.</p>
+    <button type="button" id="btn-apuracao" class="botao botao--confirma botao--largo">VER APURAÇÃO</button>
+  </section>
+
+  <!-- APURAÇÃO: preenchida pelo JavaScript -->
+  <section id="apuracao" class="apuracao" aria-label="Apuração dos votos" hidden>
+    <h2 class="apuracao__titulo">Apuração</h2>
+    <div id="apuracao-resultado" class="apuracao__resultado"></div>
+  </section>
+
+  <footer class="rodape">
+    <p>Projeto escolar fictício · Os candidatos e partidos exibidos não são reais.</p>
+  </footer>
+
+</body>
+</html>
